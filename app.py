@@ -42,6 +42,7 @@ def login():
 
         if patient:
             session['patient_id'] = patient['id']
+            flash('Patient Connecté avec succès', 'success')
             return redirect(url_for('user_dashboard'))
         else:
             return 'La connexion a échoué. Veuillez vérifier votre email et votre mot de passe.'
@@ -50,18 +51,16 @@ def login():
 
 
 @app.route('/user/logout')
-def logout1():
-    if 'patient_id' in session:
-        session.pop('patient_id', None)
-        flash('Vous avez été déconnecté', 'success')
-    return redirect(url_for('login'))  
-
+def logout_user():
+    session.clear() 
+    return redirect(url_for('login'))
 
 
 @app.route('/admin/logout')
-def logout2():
-    session.pop('admin_logged_in', None)  
-    return render_template("login.html")  
+def logout_admin():
+    session.clear()  
+    return redirect(url_for('login'))
+ 
 
 
 

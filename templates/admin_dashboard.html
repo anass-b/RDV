@@ -1,4 +1,3 @@
-<!-- admin_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles can be added here */
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,10 +29,23 @@
             </ul>
         </div>
     </nav>
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
 
     <div class="container mt-4">
         <h1>Bienvenue , Mr.{{admin_name}}</h1>
-        <!-- Content specific to admin dashboard -->
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

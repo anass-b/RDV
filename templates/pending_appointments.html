@@ -1,4 +1,3 @@
-<!-- pending_appointments.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,10 +27,10 @@
                         <td>{{ appointment.durée }}</td>
                         <td>
                             <form action="{{ url_for('process_appointment', appointment_id=appointment.id, action='accept') }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-success">Accept</button>
+                                <button type="submit" class="btn btn-success">Accepter</button>
                             </form>
                             <form action="{{ url_for('process_appointment', appointment_id=appointment.id, action='refuse') }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Refuse</button>
+                                <button type="submit" class="btn btn-danger">Refuser</button>
                             </form>
                         </td>
                     </tr>
@@ -42,7 +41,7 @@
         <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Retour</a>
     </div>
 
-    <!-- Optional: Include Bootstrap JS -->
+    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
