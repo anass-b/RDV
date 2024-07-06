@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Patient</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Edit Patient</h1>
+        <form action="{{ url_for('edit_patient', patient_id=patient.id) }}" method="POST">
+            <div class="form-group">
+                <label for="nom">Nom:</label>
+                <input type="text" class="form-control" id="nom" name="nom" value="{{ patient.nom }}" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prenom:</label>
+                <input type="text" class="form-control" id="prenom" name="prenom" value="{{ patient.prenom }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ patient.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="date_naissance">Date de Naissance:</label>
+                <input type="date" class="form-control" id="date_naissance" name="date_naissance" value="{{ patient.date_naissance }}" required>
+            </div>
+            <div class="form-group">
+                <label for="CNIE">CNIE:</label>
+                <input type="text" class="form-control" id="CNIE" name="CNIE" value="{{ patient.CNIE }}" required>
+            </div>
+            <div class="form-group">
+                <label for="num_tel">Numéro de téléphone:</label>
+                <input type="text" class="form-control" id="num_tel" name="num_tel" value="{{ patient.num_tel }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ url_for('show_patients') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+    <!-- Optional: Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

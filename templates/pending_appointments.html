@@ -1,0 +1,48 @@
+<!-- pending_appointments.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Appointments</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Approuvation des Rendez-Vous</h1>
+        <div class="mt-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Durée</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.date_appointment }}</td>
+                        <td>{{ appointment.heure_appointment }}</td>
+                        <td>{{ appointment.durée }}</td>
+                        <td>
+                            <form action="{{ url_for('process_appointment', appointment_id=appointment.id, action='accept') }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            <form action="{{ url_for('process_appointment', appointment_id=appointment.id, action='refuse') }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Refuse</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Retour</a>
+    </div>
+
+    <!-- Optional: Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

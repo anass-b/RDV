@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Créer Nouveau Patient</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Background color for the entire page */
+        }
+        .container {
+            max-width: 600px; /* Adjust as needed */
+            background-color: #ffffff; /* Background color for the form container */
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .form-control {
+            border-radius: 5px; /* Rounded corners for form inputs */
+        }
+        .btn {
+            border-radius: 5px; /* Rounded corners for buttons */
+        }
+        .btn-secondary {
+            margin-left: 10px; /* Adjust spacing between buttons */
+        }
+        h1 {
+            font-weight: 700; /* Bold font for heading */
+            color: #343a40; /* Dark color for heading */
+            margin-bottom: 30px; /* Space below heading */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Créer Nouveau Patient</h1>
+        <form method="POST" action="{{ url_for('create_patient') }}" class="form">
+            <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" name="nom" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom :</label>
+                <input type="text" name="prenom" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="mdp">Mot de Passe :</label>
+                <input type="password" name="mdp" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="date_naissance">Date de Naissance :</label>
+                <input type="date" name="date_naissance" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="CNIE">CNIE :</label>
+                <input type="text" name="CNIE" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="num_tel">Téléphone :</label>
+                <input type="tel" pattern="[0-9]{10}" name="num_tel" class="form-control" placeholder="Format: 0612345678" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Créer</button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Retour</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

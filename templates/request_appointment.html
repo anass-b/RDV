@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Appointment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% block content %}
+    <div class="container mt-5">
+        <h1>Request Appointment</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="date_appointment">Date : </label>
+                <input type="date" id="date_appointment" name="date_appointment" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="heure_appointment">Heure: </label>
+                <input type="time" id="heure_appointment" name="heure_appointment" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="durée">Durée : </label>
+                <input type="number" id="duree" name="durée" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary ">Retour</a>
+        </form>
+        
+    </div>
+    {% endblock %}
+    <div class="container mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <h3 class="text-danger">{{ message }}</h3>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
