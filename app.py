@@ -32,7 +32,7 @@ def login():
         if admin:
             session['admin_logged_in'] = True
             session['admin_id'] = admin['id']
-            flash('Admin logged in successfully', 'success')
+            flash('Admin connecté avec succès', 'success')
             return redirect(url_for('admin_dashboard'))
 
         cur = mysql.connection.cursor()
@@ -44,7 +44,7 @@ def login():
             session['patient_id'] = patient['id']
             return redirect(url_for('user_dashboard'))
         else:
-            return 'Login failed. Please check your email and password.'
+            return 'La connexion a échoué. Veuillez vérifier votre email et votre mot de passe.'
 
     return render_template('login.html')
 
@@ -53,7 +53,7 @@ def login():
 def logout1():
     if 'patient_id' in session:
         session.pop('patient_id', None)
-        flash('You have been logged out', 'success')
+        flash('Vous avez été déconnecté', 'success')
     return redirect(url_for('login'))  
 
 
@@ -125,7 +125,7 @@ def edit_patient(patient_id):
             mysql.connection.commit()
             cur.close()
 
-            flash('Patient information updated successfully', 'success')
+            flash('Les informations du Patient ont éte modifié avec succès', 'success')
             return redirect(url_for('show_patients'))
 
         except Exception as e:
@@ -142,11 +142,11 @@ def edit_patient(patient_id):
             if patient:
                 return render_template('edit_patient.html', patient=patient)
             else:
-                flash('Patient not found', 'error')
+                flash('Patient non trouvé', 'error')
                 return redirect(url_for('show_patients'))
 
         except Exception as e:
-            flash(f'An error occurred: {e}', 'error')
+            flash(f'Une erreur s\'est produite: {e}', 'error')
             return redirect(url_for('show_patients'))
         
 
@@ -162,11 +162,11 @@ def delete_patient(patient_id):
         mysql.connection.commit()
         cur.close()
 
-        flash('Patient and associated appointments deleted successfully', 'success')
+        flash('Le Patient et ses Rendez-Vous ont été supprimés avec succès', 'success')
         return redirect(url_for('show_patients'))
 
     except Exception as e:
-        flash(f'An error occurred: {e}', 'error')
+        flash(f'Une erreur s\'est produite: {e}', 'error')
         return redirect(url_for('show_patients'))
 
 
@@ -190,7 +190,7 @@ def check_overlapping_appointment(date_appointment, heure_appointment, duree):
         return existing_appointment is not None
 
     except Exception as e:
-        app.logger.error(f"Error checking overlapping appointment: {e}")
+        app.logger.error(f"Erreur lors de la vérification des rendez-vous qui se chevauchent: {e}")
         return True  
 
 
@@ -217,7 +217,7 @@ def request_appointment():
             patient_id = session['patient_id']
 
             if check_overlapping_appointment(date_appointment, heure_appointment, duree):
-                flash('This appointment time is already booked. Please choose a different time.', 'error')
+                flash('Cette heure de rendez-vous est déjà réservée. Veuillez choisir une heure différente.', 'error')
                 return redirect(url_for('request_appointment'))
             
             cur = mysql.connection.cursor()
@@ -226,7 +226,7 @@ def request_appointment():
             mysql.connection.commit()
             cur.close()
             
-            flash('Appointment requested successfully', 'success')
+            flash('Rendez-vous pris avec succès', 'success')
             return redirect(url_for('user_dashboard'))
         
         return render_template('request_appointment.html')
@@ -257,7 +257,7 @@ def process_appointment(appointment_id, action):
             mysql.connection.commit()
             cur.close()
 
-            flash(f'Appointment {status} successfully', 'success')
+            flash(f'Rendez-vous {status} avec succès', 'success')
             return redirect(url_for('pending_appointments'))
 
         return 'Invalid action'
@@ -277,7 +277,7 @@ def admin_dashboard():
             admin_name = f"{admin['prenom']} {admin['nom']}"
             return render_template('admin_dashboard.html', admin_name=admin_name)
         else:
-            return 'Admin not found', 404  
+            return 'Admin non trouvé', 404  
     except Exception as e:
         return str(e)  
 
