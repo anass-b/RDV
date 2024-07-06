@@ -54,7 +54,7 @@ def logout1():
     if 'patient_id' in session:
         session.pop('patient_id', None)
         flash('You have been logged out', 'success')
-    return redirect(url_for('login'))  # Redirect to homepage or login page
+    return redirect(url_for('login'))  
 
 
 
@@ -63,45 +63,6 @@ def logout2():
     session.pop('admin_logged_in', None)  
     return render_template("login.html")  
 
-
-def check_overlapping_appointment(date_appointment, heure_appointment, duree):
-    try:
-        cur = mysql.connection.cursor()
-
-        # Check for overlapping appointments
-        cur.execute("""
-            SELECT * FROM appointments
-            WHERE date_appointment = %s
-            AND status = 'accepted'
-            AND (
-                (heure_appointment <= %s AND ADDTIME(heure_appointment, SEC_TO_TIME(%s * 60)) > %s) OR
-                (heure_appointment >= %s AND heure_appointment < ADDTIME(%s, SEC_TO_TIME(%s * 60)))
-            )
-        """, (date_appointment, heure_appointment, duree, heure_appointment, heure_appointment, heure_appointment, duree))
-
-        existing_appointment = cur.fetchone()
-        cur.close()
-
-        return existing_appointment is not None
-
-    except Exception as e:
-        app.logger.error(f"Error checking overlapping appointment: {e}")
-        return True  # Treat as overlapping in case of error
-
-
-
-@app.route('/admin/show_patients')
-def show_patients():
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM patients")
-        patients = cur.fetchall()
-        cur.close()
-
-        return render_template('show_patients.html', patients=patients)
-
-    except Exception as e:
-        return str(e)
 
 
 
@@ -127,6 +88,22 @@ def create_patient():
             return str(e)
 
     return render_template('create_patient.html')
+
+
+@app.route('/admin/show_patients')
+def show_patients():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM patients")
+        patients = cur.fetchall()
+        cur.close()
+
+        return render_template('show_patients.html', patients=patients)
+
+    except Exception as e:
+        return str(e)
+
+
 
 @app.route('/admin/edit_patient/<int:patient_id>', methods=['GET', 'POST'])
 def edit_patient(patient_id):
@@ -193,6 +170,29 @@ def delete_patient(patient_id):
         return redirect(url_for('show_patients'))
 
 
+def check_overlapping_appointment(date_appointment, heure_appointment, duree):
+    try:
+        cur = mysql.connection.cursor()
+
+        cur.execute("""
+            SELECT * FROM appointments
+            WHERE date_appointment = %s
+            AND status = 'accepted'
+            AND (
+                (heure_appointment <= %s AND ADDTIME(heure_appointment, SEC_TO_TIME(%s * 60)) > %s) OR
+                (heure_appointment >= %s AND heure_appointment < ADDTIME(%s, SEC_TO_TIME(%s * 60)))
+            )
+        """, (date_appointment, heure_appointment, duree, heure_appointment, heure_appointment, heure_appointment, duree))
+
+        existing_appointment = cur.fetchone()
+        cur.close()
+
+        return existing_appointment is not None
+
+    except Exception as e:
+        app.logger.error(f"Error checking overlapping appointment: {e}")
+        return True  
+
 
 @app.route('/user/appointments')
 def user_appointments():
@@ -216,12 +216,10 @@ def request_appointment():
             duree = request.form['durée']
             patient_id = session['patient_id']
 
-            # Check for overlapping appointments
             if check_overlapping_appointment(date_appointment, heure_appointment, duree):
                 flash('This appointment time is already booked. Please choose a different time.', 'error')
                 return redirect(url_for('request_appointment'))
             
-            # Insert the appointment if no overlap
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO appointments (date_appointment, heure_appointment, durée, patient_id, status) VALUES (%s, %s, %s, %s, 'pending')", 
                         (date_appointment, heure_appointment, duree, patient_id))
@@ -270,7 +268,6 @@ def process_appointment(appointment_id, action):
 @app.route('/admin/dashboard')
 def admin_dashboard():
     try:
-        # Fetch admin's name from the database
         cur = mysql.connection.cursor()
         cur.execute("SELECT nom, prenom FROM admins WHERE id = %s", (session['admin_id'],))
         admin = cur.fetchone()
